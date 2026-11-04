@@ -73,5 +73,5 @@ dkms.conf
 build/
 
 .DS_Store
-*.png
-*.swp~
+*.png~
+*.swp
