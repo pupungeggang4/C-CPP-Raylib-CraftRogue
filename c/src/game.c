@@ -4,12 +4,11 @@
 void gameInit(GameVar* gameVar) {
     SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     SetConfigFlags(FLAG_VSYNC_HINT);
-    int width = 800, height = 600;
-    InitWindow(width, height, "Puzzle Game");
-    int mWidth = GetMonitorWidth(0);
-    Vector2 dpiScale = GetWindowScaleDPI();
+    InitWindow(800, 600, "Puzzle Game");
 
     #ifndef __APPLE__
+    int mWidth = GetMonitorWidth(0);
+    Vector2 dpiScale = GetWindowScaleDPI();
     if (mWidth / (float)dpiScale.x > 1280) {
         SetWindowSize(800 * dpiScale.x, 600 * dpiScale.y);
     } else {
