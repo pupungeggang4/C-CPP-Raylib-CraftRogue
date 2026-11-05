@@ -24,7 +24,7 @@ void gameLoop(GameVar* gameVar) {
 
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
-        if (gameVar->scaled) pos = Vector2Scale(pos, gameVar->scale.x);
+        if (gameVar->scaled) pos = Vector2Scale(pos, 1 / gameVar->scale.x);
         printf("(%.0f, %.0f)\n", pos.x, pos.y);
     }
 
@@ -34,4 +34,5 @@ void gameLoop(GameVar* gameVar) {
 }
 
 void gameEnd(GameVar* gameVar) {
+    CloseWindow();
 }
