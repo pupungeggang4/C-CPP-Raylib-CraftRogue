@@ -2,17 +2,15 @@
 #include "game.h"
 
 void gameInit(GameVar* gameVar) {
-    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Puzzle Game");
 
     #ifndef __APPLE__
     int mWidth = GetMonitorWidth(0);
-    Vector2 dpiScale = GetWindowScaleDPI();
-    if (mWidth / (float)dpiScale.x > 1280) {
-        SetWindowSize(800 * dpiScale.x, 600 * dpiScale.y);
-    } else {
-        ClearWindowState(FLAG_WINDOW_HIGHDPI);
+    gameVar->scale = GetWindowScaleDPI();
+    if (mWidth / (float) gameVar->scale.x > 1280) {
+        gameVar->scaled = 1;
+        SetWindowSize(800 * gameVar->scale.x, 600 * gameVar->scale.y);
     }
     #endif
 
@@ -26,6 +24,7 @@ void gameLoop(GameVar* gameVar) {
 
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
+        if (gameVar->scaled) pos = Vector2Scale(pos, gameVar->scale.x);
         printf("(%.0f, %.0f)\n", pos.x, pos.y);
     }
 
