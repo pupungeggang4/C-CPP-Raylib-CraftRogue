@@ -1,6 +1,12 @@
 #include "includes.h"
+#include "gamevar.h"
+#include "game.h"
 
 int main (int argc, char** argv) {
-    printf("Hello\n");
+    gameInit(&gameVar);
+    while (gameVar.running) {
+        gameLoop(&gameVar);
+    }
+    gameEnd(&gameVar);
     return 0;
 }
