@@ -4,7 +4,7 @@
 #include "includes.h"
 
 struct GameVar {
-    Vector2 scale; int scaled;
+    Camera2D camera;
     int running;
 };
 

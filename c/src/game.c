@@ -4,13 +4,16 @@
 void gameInit(GameVar* gameVar) {
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Puzzle Game");
-
+    Camera2D tempCamera = {0};
+    gameVar->camera = tempCamera;
     #ifndef __APPLE__
     int mWidth = GetMonitorWidth(0);
-    gameVar->scale = GetWindowScaleDPI();
-    if (mWidth / (float) gameVar->scale.x > 1280) {
-        gameVar->scaled = 1;
-        SetWindowSize(800 * gameVar->scale.x, 600 * gameVar->scale.y);
+    Vector2 scale = GetWindowScaleDPI();
+    if (mWidth / (float) scale.x > 1280) {
+        SetWindowSize(800 * scale.x, 600 * scale.y);
+        SetWindowPosition(
+            GetMonitorWidth(0) / 2.0f - GetRenderWidth() / 2.0f, GetMonitorHeight(0) / 2.0f - GetRenderHeight() / 2.0f
+        );
     }
     #endif
 
@@ -20,17 +23,21 @@ void gameInit(GameVar* gameVar) {
 }
 
 void gameLoop(GameVar* gameVar) {
-    if (WindowShouldClose()) gameVar->running = 0;
-
+    gameVar->camera.zoom = GetRenderWidth() / 800.0f;
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
-        if (gameVar->scaled) pos = Vector2Scale(pos, 1 / gameVar->scale.x);
+        pos = Vector2Scale(pos, 1 / gameVar->camera.zoom);
         printf("(%.0f, %.0f)\n", pos.x, pos.y);
     }
 
     BeginDrawing();
+    BeginMode2D(gameVar->camera);
     ClearBackground(RAYWHITE);
+    DrawRectangle(0, 0, 80, 80, PINK);
+    EndMode2D();
     EndDrawing();
+
+    if (WindowShouldClose()) gameVar->running = 0;
 }
 
 void gameEnd(GameVar* gameVar) {
