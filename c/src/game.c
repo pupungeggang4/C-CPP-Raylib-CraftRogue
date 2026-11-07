@@ -8,9 +8,10 @@ void gameInit(GameVar* gameVar) {
     #ifndef __APPLE__
     int mWidth = GetMonitorWidth(0); int mHeight = GetMonitorHeight(0);
     Camera2D tempCamera = {0}; gameVar->camera = tempCamera;
-    Vector2 scale = GetWindowScaleDPI();
-    if (mWidth / scale.x < 800 || mHeight / scale.y < 600) {
-        int width = mWidth / scale.x * 0.8; int height = width * 0.75;
+    gameVar->scale = GetWindowScaleDPI();
+    if (mWidth / gameVar->scale.x < 820 || mHeight / gameVar->scale.y < 620) {
+        int width = mWidth * 0.8; int height = width * 0.75;
+        printf("%d\n", width);
         SetWindowSize(width, height);
         SetWindowPosition(
             GetMonitorWidth(0) / 2.0f - GetRenderWidth() / 2.0f,
@@ -28,7 +29,7 @@ void gameLoop(GameVar* gameVar) {
     gameVar->camera.zoom = GetRenderWidth() / 800.0f;
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
-        //pos = Vector2Scale(pos, 1 / gameVar->camera.zoom);
+        pos = Vector2Scale(pos, gameVar->scale.x / gameVar->camera.zoom);
         printf("(%.0f, %.0f)\n", pos.x, pos.y);
     }
 
