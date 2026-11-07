@@ -6,6 +6,7 @@ void gameInit(GameVar* gameVar) {
     SetConfigFlags(FLAG_VSYNC_HINT);
     int width = 800, height = 600;
     InitWindow(width, height, "Puzzle Game");
+    #ifndef __APPLE__
     int mWidth = GetMonitorWidth(0); int mHeight = GetMonitorHeight(0);
     if (mWidth * aspRatio > height) {
         height = (int)(mHeight * 0.8); width = (int)(height / aspRatio);
@@ -14,7 +15,7 @@ void gameInit(GameVar* gameVar) {
     }
     SetWindowSize(width, height);
     SetWindowPosition((mWidth - width) / 2, (mHeight - height) / 2);
-
+    #endif
     SetExitKey(KEY_NULL);
 
     Camera2D tempCamera = {0}; gameVar->camera = tempCamera;
